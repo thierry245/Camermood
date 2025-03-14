@@ -1,0 +1,399 @@
+/*  Header avec vidéo de fond */
+header {
+    position: relative;
+    width: 100%;
+    height: 250px; /* Hauteur définie pour le header */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    overflow: hidden;
+}
+
+/*  Vidéo en arrière-plan */
+.background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajuste la vidéo pour qu’elle couvre juste le header */
+    z-index: -1; /* Place la vidéo en arrière-plan */
+}
+
+/*  Contenu du header */
+.header-content {
+    position: relative;
+    z-index: 1; /* Pour être au-dessus de la vidéo */
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+/*  Logo */
+.header-content img {
+    width: 150px;
+    height: auto;
+}
+
+/*  Navigation */
+nav {
+    display: flex;
+    gap: 15px; /* Espace entre les onglets */
+}
+
+nav a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav a img {
+    width: 80px;  /* Ajuste la taille des icônes */
+    height: auto;
+    transition: transform 0.3s; /* Effet zoom au survol */
+}
+
+/*  Augmentation de la taille pour certains onglets */
+.onglet-image-sites {
+
+    width: 350px !important; /* Augmente la largeur */
+    height: auto !important;
+}
+.onglet-image-restaurants {
+
+    width: 280px !important; /* Augmente la largeur */
+    height: auto !important;
+}
+.onglet-image-festivals {
+    width: 230px !important; /* Augmente la largeur */
+    height: auto !important;
+}
+
+.onglet-image-logo {
+
+    width: 230px !important; /* Augmente la largeur */
+    height: auto !important;
+    
+
+}
+
+
+
+nav a img:hover {
+    transform: scale(1.1); /* Zoom léger au survol */
+}
+
+body{
+
+    margin: 0;
+    padding: 0;
+
+}
+
+/* 🌟 Styles pour le pied de page */
+.booking-footer {
+    background-color: #335258; /* Fond bleu foncé */
+    color: #fff; /* Texte blanc */
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+    width: 100%;
+    height: 500px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #44686e; /* Bordure bleue plus claire */
+}
+
+.footer-section {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.footer-section h4 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.footer-section ul li a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 20px auto 0;
+    padding-top: 20px;
+}
+
+.social-icons a {
+    margin-right: 15px;
+}
+
+.social-icons img {
+    width: 24px;
+    height: 24px;
+}
+
+.copyright {
+    font-size: 12px;
+    color: #ccc; /* Texte gris clair */
+}
+
+/* Styles pour le bouton "Ajouter un lieu" */
+.bouton-ajouter-lieu {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #335258;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    transition: background-color 0.3s;
+}
+
+.bouton-ajouter-lieu:hover {
+    background-color: #44686e;
+}
+
+.form {
+
+    border: 2px solid #44686e;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    margin-left: 40px;
+    margin-right: 40px;
+    box-shadow: 6px 6px 15px rgb(29,49,63);
+    border-radius: 6px;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    padding: 10px;
+    flex-direction: column;
+    gap: 15px;
+    font-size: 16px;
+    background-color: #ccc;
+    width: 700px; /* Largeur fixe */
+    margin: 40px auto; /* Centrage */
+
+}
+
+form div {
+    width: 100%; /* Prend toute la largeur du formulaire */
+    padding: 10px;
+}
+
+input, select, textarea {
+    
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px; 
+    width: 500px;
+    
+    
+}
+
+h1 {
+    text-align: center;
+    font-size: 30px;
+    color: #333;
+}
+
+button {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    align-items: center;
+    width: 200px;
+}
+
+button:hover {
+    background-color: darkgreen;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 20px;
+}
+
+form div:last-child {
+    display: flex;
+    justify-content: center;
+}
+
+/* Styles pour la page de remerciement */
+.message-remerciement {
+    text-align: center;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.message-remerciement h1 {
+    color: #335258;
+    margin-bottom: 20px;
+}
+
+.message-remerciement p {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.liens-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.bouton {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #335258;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.bouton:hover {
+    background-color: #44686e;
+}
+
+/* Conteneur de la grille */
+.grille-destinations {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 colonnes par ligne */
+    gap: 20px; /* Espace entre les cartes */
+    padding: 20px;
+}
+
+/* Styles pour chaque carte de destination */
+.carte-destination {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.carte-destination:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.carte-destination img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.carte-destination h3 {
+    font-size: 18px;
+    margin: 10px;
+    color: #335258;
+}
+
+.carte-destination p {
+    font-size: 14px;
+    margin: 5px 10px;
+    color: #666;
+}
+
+/* Bouton de réservation */
+.bouton-voyager {
+    display: block;
+    margin: 10px;
+    padding: 10px;
+    background-color: #335258;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.bouton-voyager:hover {
+    background-color: #44686e;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: block;
+}
+
+.description-destination {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.description-destination img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.bouton-reserver {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.bouton-reserver a {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+.bouton-reserver a:hover {
+    background-color: #0056b3;
+}
