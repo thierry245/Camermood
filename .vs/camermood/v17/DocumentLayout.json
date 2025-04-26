@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\Thierry-Patrick\\OneDrive - C\u00E9gep de l\u0027Abitibi-T\u00E9miscamingue\\Documents\\GitHub\\camermood\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Thierry-Patrick\\OneDrive - C\u00E9gep de l\u0027Abitibi-T\u00E9miscamingue\\Documents\\GitHub\\camermood\\ajouter_lieu.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ajouter_lieu.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Thierry-Patrick\\OneDrive - C\u00E9gep de l\u0027Abitibi-T\u00E9miscamingue\\Documents\\GitHub\\camermood\\ajouter_lieu.php||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ajouter_lieu.php||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Thierry-Patrick\\OneDrive - C\u00E9gep de l\u0027Abitibi-T\u00E9miscamingue\\Documents\\GitHub\\camermood\\JS\\script.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -27,11 +27,11 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ajouter_lieu.html",
-              "DocumentMoniker": "C:\\Users\\Thierry-Patrick\\OneDrive - C\u00E9gep de l\u0027Abitibi-T\u00E9miscamingue\\Documents\\GitHub\\camermood\\ajouter_lieu.html",
-              "RelativeDocumentMoniker": "ajouter_lieu.html",
-              "ToolTip": "C:\\Users\\Thierry-Patrick\\OneDrive - C\u00E9gep de l\u0027Abitibi-T\u00E9miscamingue\\Documents\\GitHub\\camermood\\ajouter_lieu.html",
-              "RelativeToolTip": "ajouter_lieu.html",
+              "Title": "ajouter_lieu.php",
+              "DocumentMoniker": "C:\\Users\\Thierry-Patrick\\OneDrive - C\u00E9gep de l\u0027Abitibi-T\u00E9miscamingue\\Documents\\GitHub\\camermood\\ajouter_lieu.php",
+              "RelativeDocumentMoniker": "ajouter_lieu.php",
+              "ToolTip": "C:\\Users\\Thierry-Patrick\\OneDrive - C\u00E9gep de l\u0027Abitibi-T\u00E9miscamingue\\Documents\\GitHub\\camermood\\ajouter_lieu.php",
+              "RelativeToolTip": "ajouter_lieu.php",
               "ViewState": "AgIAAKcAAAAAAAAAAAAkwLEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2025-03-14T19:22:08.032Z",

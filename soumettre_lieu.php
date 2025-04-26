@@ -1,5 +1,14 @@
 <?php
+
+require_once __DIR__.'/includes/db_functions.php';
+require_once __DIR__.'/includes/session_functions.php';
+
 session_start(); // Démarrer la session
+
+// Vérifier la session au début de chaque page protégée
+verifierSession();
+
+checkAdminAccess(); // Bloque l'accès si non-admin
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Récupérer les données du formulaire

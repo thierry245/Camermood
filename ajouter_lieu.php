@@ -1,3 +1,11 @@
+<?php
+require_once __DIR__.'/includes/db_functions.php';
+require_once __DIR__.'/includes/db_functions.php';
+// Vérification de session ET des droits admin
+verifierSession();
+checkAdminAccess(); // Bloque l'accès si non-admin
+
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -14,7 +22,7 @@
         <div class="header-content">
             <img class="onglet-image-logo" src="images/Logo_Camermood.png" alt="Logo CamerMood">
             <nav>
-                <a href="index.html">
+                <a href="index.php">
                     <img src="images\Onglet_Acceuil.png" alt="Accueil">
                 </a>
                 <a href="hotels.php">
@@ -33,15 +41,17 @@
         </div>
     </header>
 
-    <main>
+    <main class="form-container">
         
-        <form class="form" id="formulaire-ajout-lieu" action="soumettre_lieu.php" method="POST" enctype="multipart/form-data">
+        <h1>Formulaire ajouter un lieu</h1>
 
-            <h1 class="h1-form">Formulaire ajouter un lieu</h1>
+        <form class="auth-form" id="formulaire-ajout-lieu" action="soumettre_lieu.php" method="POST" enctype="multipart/form-data">
+
+            
             
             <!-- Nom du lieu -->
 
-                <div>
+                <div class="form-group">
                     <label for="nom-lieu">Nom du lieu :</label>
                     <input type="text" id="nom-lieu" name="nom-lieu" required>
                     <span id="nom-lieu-error" class="error-message"></span>
@@ -50,7 +60,7 @@
 
             <!-- Adresse -->
 
-                <div>
+                <div class="form-group">
                     <label for="adresse-lieu">Adresse :</label>
                     <input type="text" id="adresse-lieu" name="adresse-lieu" required>
                     <span id="adresse-lieu-error" class="error-message"></span>
@@ -58,7 +68,7 @@
             
             <!-- Téléphone -->
 
-                <div>
+                <div class="form-group">
                     <label for="telephone-lieu">Téléphone :</label>
                     <input type="tel" id="telephone-lieu" name="telephone-lieu" required>
                     <span id="telephone-lieu-error" class="error-message"></span>
@@ -66,7 +76,7 @@
 
             <!-- Prix -->
 
-                <div>
+                <div class="form-group">
                     <label for="Prix-lieu">Prix :</label>
                     <input type="text" id="Prix-lieu" name="Prix-lieu" required>
                     <span id="prix-lieu-error" class="error-message"></span>
@@ -75,7 +85,7 @@
             
 
             <!-- Site web -->
-             <div>
+             <div class="form-group">
 
                 <label for="site-web-lieu">Site web :</label>
                 <input type="url" id="site-web-lieu" name="site-web-lieu">
@@ -83,7 +93,7 @@
              </div>
             
             <!-- Type de lieu -->
-            <div>
+            <div class="form-group">
                 <label for="type-lieu">Type de lieu :</label>
                 <select id="type-lieu" name="type-lieu" required>
                     <option value="">Sélectionnez un type</option>
@@ -97,7 +107,7 @@
             
 
             <!-- Région -->
-            <div>
+            <div class="form-group">
                 <label for="region-lieu">Région :</label>
                 <select id="region-lieu" name="region-lieu" required>
                     <option value="">Sélectionnez une région</option>
@@ -110,7 +120,7 @@
             </div>
             
             <!-- Description -->
-            <div>
+            <div class="form-group">
                 <label for="description-lieu">Description :</label>
                 <textarea id="description-lieu" name="description-lieu" rows="4" required></textarea>
                 <span id="description-lieu-error" class="error-message"></span>
@@ -118,7 +128,7 @@
             
             
             <!-- Image -->
-             <div>
+             <div class="form-group">
 
                 <label for="image-lieu">Image :</label>
                 <input type="file" id="image-lieu" name="image-lieu" accept="image/*">
@@ -127,8 +137,8 @@
             
 
             <!-- Bouton de soumission -->
-             <div>
-                <button type="submit">Ajouter le lieu</button>
+             <div class="form-group">
+                <button type="submit" class="btn-primary">Ajouter le lieu</button>
              </div>
             
         </form>

@@ -1,3 +1,13 @@
+<?php
+session_start();
+require_once __DIR__.'/includes/db_functions.php';
+
+$isLoggedIn = isset($_SESSION['user']['id']);
+$userNom = $isLoggedIn ? $_SESSION['user']['nom'] : '';
+$isAdmin = $isLoggedIn && $_SESSION['user']['is_admin'];
+$showAddButton = $isAdmin;
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -18,7 +28,7 @@
         <div class="header-content">
             <img class="onglet-image-logo" src="images\Logo_Camermood.png" alt="Logo CamerMood">
             <nav>
-                <a href="index.html">
+                <a href="index.php">
                     <img src="images\Onglet_Acceuil.png" alt="Accueil">
                 </a>
                 <a href="hotels.php">
@@ -40,15 +50,23 @@
     </header>
 
     <main> 
+        <h1>Bienvenue sur CamerMood <?= $isLoggedIn ? htmlspecialchars($userNom) : '' ?></h1>
+            
+            <?php if($isLoggedIn): ?>
+                <div class="user-welcome">
+                    <p>Content de vous revoir, <?= htmlspecialchars($userNom) ?> !</p>
+                    <a href="deconnexion.php" class="btn-logout">Déconnexion</a>
+                </div>
+            <?php else: ?>
+                <div class="auth-options">
+                    <a href="connexion.php" class="btn-primary">Se connecter</a>
+                    <a href="inscription.php" class="btn-secondary">S'inscrire</a>
+                </div>
+            <?php endif; ?>
 
-            <h1>Bienvenue sur CamerMood Accueil</h1>
-        <p>
-            Découvrez les meilleurs sites touristiques, hôtels, restaurants et festivals au Cameroun.
-        </p>
-
-        <!-- Bouton pour accéder au formulaire d'ajout de lieu -->
-        <a href="ajouter_lieu.html" class="bouton-ajouter-lieu">Ajouter un lieu</a>
-
+            <?php if ($showAddButton): ?>
+                <a href="ajouter_lieu.php" class="bouton-ajouter-lieu">Ajouter un lieu</a>
+            <?php endif; ?>
     </main>
     
     

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'donnees_destinations.php'; // Inclure les données
 
 // Vérifier si l'ID est passé dans l'URL
@@ -40,7 +41,7 @@ if (isset($_GET['id'])) {
         <div class="header-content">
             <img class="onglet-image-logo" src="images/Logo_Camermood.png" alt="Logo CamerMood">
             <nav>
-                <a href="index.html"><img src="images/Onglet_Acceuil.png" alt="Accueil"></a>
+                <a href="index.php"><img src="images/Onglet_Acceuil.png" alt="Accueil"></a>
                 <a href="hotels.php"><img src="images/Onglet_hotels.png" alt="Hôtels"></a>
                 <a href="restaurant.php"><img class="onglet-image-restaurants" src="images/Onglet_restaurant.png" alt="Restaurants"></a>
                 <a href="sites_touristiques.php"><img class="onglet-image-sites" src="images/Onglet_sites_touristique.png" alt="Sites touristiques"></a>
@@ -51,6 +52,13 @@ if (isset($_GET['id'])) {
 
     <main>
         <h1><?php echo $destination['nom']; ?></h1>
+        
+        <?php if(isset($_SESSION['user_nom'])): ?>
+            <div class="user-welcome">
+                <p>Connecté en tant que : <?= htmlspecialchars($_SESSION['user_nom']) ?></p>
+            </div>
+        <?php endif; ?>
+
         <div class="description-destination">
             <img src="<?php echo $destination['image']; ?>" alt="<?php echo $destination['nom']; ?>">
             <p><strong>Ville :</strong> <?php echo $destination['ville']; ?></p>
@@ -61,7 +69,17 @@ if (isset($_GET['id'])) {
             <p><strong>Description :</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         </div>
         <div class="bouton-reserver">
-            <a href="#" class="bouton-reserver">Réserver</a>
+            <?php if(isset($_SESSION['user_id'])): ?>
+                <a href="reservation.php?lieu_id=<?= $destination['id'] ?>" class="btn-reserver">Réserver</a>
+            <?php else: ?>
+                <div class="auth-required">
+                    <p>Vous devez être connecté pour réserver.</p>
+                    <div class="auth-options">
+                        <a href="connexion.php?redirect=<?= urlencode($_SERVER['REQUEST_URI']) ?>" class="btn-primary">Se connecter</a>
+                        <a href="inscription.php?redirect=<?= urlencode($_SERVER['REQUEST_URI']) ?>" class="btn-secondary">S'inscrire</a>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     </main>
 

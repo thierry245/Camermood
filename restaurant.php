@@ -26,7 +26,7 @@ $destinationsFiltrees = array_filter($destinations, function ($destination) use 
         <div class="header-content">
             <img class="onglet-image-logo" src="images\Logo_Camermood.png" alt="Logo CamerMood">
             <nav>
-                <a href="index.html">
+                <a href="index.php">
                     <img src="images\Onglet_Acceuil.png" alt="Accueil">
                 </a>
                 <a href="hotels.php">

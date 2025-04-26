@@ -1,8 +1,8 @@
-/*  Header avec vidéo de fond */
+/* Header avec vidéo de fond */
 header {
     position: relative;
     width: 100%;
-    height: 250px; /* Hauteur définie pour le header */
+    height: 250px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -10,37 +10,33 @@ header {
     overflow: hidden;
 }
 
-/*  Vidéo en arrière-plan */
 .background-video {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ajuste la vidéo pour qu’elle couvre juste le header */
-    z-index: -1; /* Place la vidéo en arrière-plan */
+    object-fit: cover;
+    z-index: -1;
 }
 
-/*  Contenu du header */
 .header-content {
     position: relative;
-    z-index: 1; /* Pour être au-dessus de la vidéo */
+    z-index: 1;
     display: flex;
     align-items: center;
     width: 100%;
     justify-content: space-between;
 }
 
-/*  Logo */
 .header-content img {
     width: 150px;
     height: auto;
 }
 
-/*  Navigation */
 nav {
     display: flex;
-    gap: 15px; /* Espace entre les onglets */
+    gap: 15px;
 }
 
 nav a {
@@ -50,52 +46,44 @@ nav a {
 }
 
 nav a img {
-    width: 80px;  /* Ajuste la taille des icônes */
+    width: 80px;
     height: auto;
-    transition: transform 0.3s; /* Effet zoom au survol */
+    transition: transform 0.3s;
 }
 
-/*  Augmentation de la taille pour certains onglets */
 .onglet-image-sites {
-
-    width: 350px !important; /* Augmente la largeur */
+    width: 350px !important;
     height: auto !important;
 }
+
 .onglet-image-restaurants {
-
-    width: 280px !important; /* Augmente la largeur */
+    width: 280px !important;
     height: auto !important;
 }
+
 .onglet-image-festivals {
-    width: 230px !important; /* Augmente la largeur */
+    width: 230px !important;
     height: auto !important;
 }
 
 .onglet-image-logo {
-
-    width: 230px !important; /* Augmente la largeur */
+    width: 230px !important;
     height: auto !important;
-    
-
 }
-
-
 
 nav a img:hover {
-    transform: scale(1.1); /* Zoom léger au survol */
+    transform: scale(1.1);
 }
 
-body{
-
+body {
     margin: 0;
     padding: 0;
-
 }
 
-/* 🌟 Styles pour le pied de page */
+/* Footer */
 .booking-footer {
-    background-color: #335258; /* Fond bleu foncé */
-    color: #fff; /* Texte blanc */
+    background-color: #335258;
+    color: #fff;
     padding: 40px 20px;
     font-family: Arial, sans-serif;
     width: 100%;
@@ -108,7 +96,7 @@ body{
     max-width: 1200px;
     margin: 0 auto;
     padding-bottom: 20px;
-    border-bottom: 1px solid #44686e; /* Bordure bleue plus claire */
+    border-bottom: 1px solid #44686e;
 }
 
 .footer-section {
@@ -161,74 +149,52 @@ body{
 
 .copyright {
     font-size: 12px;
-    color: #ccc; /* Texte gris clair */
+    color: #ccc;
 }
 
-/* Styles pour le bouton "Ajouter un lieu" */
-.bouton-ajouter-lieu {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #335258;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 16px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 20px;
-    transition: background-color 0.3s;
+/* Formulaires */
+.form-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
 }
 
-.bouton-ajouter-lieu:hover {
-    background-color: #44686e;
-}
-
-.form {
-
+.auth-form, .reservation-form {
+    background: white;
+    padding: 30px;
     border: 2px solid #44686e;
-    margin-top: 40px;
-    margin-bottom: 20px;
-    margin-left: 40px;
-    margin-right: 40px;
+    border-radius: 8px;
     box-shadow: 6px 6px 15px rgb(29,49,63);
-    border-radius: 6px;
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-    padding: 10px;
-    flex-direction: column;
-    gap: 15px;
-    font-size: 16px;
-    background-color: #ccc;
-    width: 700px; /* Largeur fixe */
-    margin: 40px auto; /* Centrage */
-
+    margin: 40px auto;
 }
 
-form div {
-    width: 100%; /* Prend toute la largeur du formulaire */
+.form-group {
+    margin-bottom: 20px;
+    width: 100%;
     padding: 10px;
+    margin-right: 30px;
 }
 
-input, select, textarea {
-    
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 20px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
     padding: 10px;
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 14px; 
-    width: 500px;
-    
-    
+    font-size: 14px;
+    width: 95%;
+    margin-right: 5px;
 }
 
-h1 {
-    text-align: center;
-    font-size: 30px;
-    color: #333;
-}
-
-button {
+.btn-primary {
     background-color: green;
     color: white;
     border: none;
@@ -237,27 +203,136 @@ button {
     cursor: pointer;
     font-size: 16px;
     margin-top: 10px;
-    align-items: center;
     width: 200px;
 }
 
-button:hover {
+.btn-primary:hover {
     background-color: darkgreen;
 }
 
-label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    display: block;
-    font-size: 20px;
+.btn-secondary {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
 }
 
-form div:last-child {
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: block;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.alert.error {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.alert.success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.auth-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.forgot-password {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    text-align: right;
+    color: #335258;
+}
+
+.reservation-summary {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.form-actions {
     display: flex;
+    gap: 15px;
+    margin-top: 30px;
     justify-content: center;
 }
 
-/* Styles pour la page de remerciement */
+/* Autres styles */
+h1 {
+    text-align: center;
+    font-size: 30px;
+    color: #333;
+}
+
+.grille-destinations {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.carte-destination {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.carte-destination:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.carte-destination img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.carte-destination h3 {
+    font-size: 18px;
+    margin: 10px;
+    color: #335258;
+}
+
+.carte-destination p {
+    font-size: 14px;
+    margin: 5px 10px;
+    color: #666;
+}
+
+.bouton-voyager {
+    display: block;
+    margin: 10px;
+    padding: 10px;
+    background-color: #335258;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.bouton-voyager:hover {
+    background-color: #44686e;
+}
+
 .message-remerciement {
     text-align: center;
     max-width: 600px;
@@ -300,69 +375,23 @@ form div:last-child {
     background-color: #44686e;
 }
 
-/* Conteneur de la grille */
-.grille-destinations {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 colonnes par ligne */
-    gap: 20px; /* Espace entre les cartes */
-    padding: 20px;
-}
-
-/* Styles pour chaque carte de destination */
-.carte-destination {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.carte-destination:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.carte-destination img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.carte-destination h3 {
-    font-size: 18px;
-    margin: 10px;
-    color: #335258;
-}
-
-.carte-destination p {
-    font-size: 14px;
-    margin: 5px 10px;
-    color: #666;
-}
-
-/* Bouton de réservation */
-.bouton-voyager {
-    display: block;
-    margin: 10px;
-    padding: 10px;
+/* Styles pour le bouton "Ajouter un lieu" */
+.bouton-ajouter-lieu {
+    display: inline-block;
+    padding: 10px 20px;
     background-color: #335258;
     color: #fff;
-    text-align: center;
     text-decoration: none;
     border-radius: 4px;
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
     transition: background-color 0.3s;
 }
 
-.bouton-voyager:hover {
+.bouton-ajouter-lieu:hover {
     background-color: #44686e;
-}
-
-.error-message {
-    color: red;
-    font-size: 0.9em;
-    margin-top: 5px;
-    display: block;
 }
 
 .description-destination {
@@ -396,4 +425,154 @@ form div:last-child {
 
 .bouton-reserver a:hover {
     background-color: #0056b3;
+}
+
+.auth-options {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.btn-primary {
+    background-color: #335258;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #44686e;
+}
+
+.btn-secondary {
+    background-color: #f0f0f0;
+    color: #335258;
+    padding: 12px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #e0e0e0;
+}
+
+.auth-required {
+    text-align: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.auth-required p {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.reservations-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.reservations-table th, 
+.reservations-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.reservations-table th {
+    background-color: #335258;
+    color: white;
+}
+
+.reservations-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.reservations-table tr:hover {
+    background-color: #ddd;
+}
+
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: block;
+}
+.error-message {
+    color: red;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid red;
+}
+
+.error-message:empty {
+
+    display: none;
+
+}
+
+.form-control:invalid {
+    border: none;
+    box-shadow: none;
+}
+
+.invalid-feedback:empty {
+    display: none;
+}
+  
+/* Styles pour l'affichage utilisateur */
+.user-welcome {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 20px 0;
+    text-align: center;
+    border: 1px solid #dee2e6;
+}
+
+.user-welcome p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #335258;
+}
+
+.btn-logout {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #dc3545;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.btn-logout:hover {
+    background-color: #c82333;
+}
+
+/* Style pour le bouton réserver */
+.btn-reserver {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    margin: 20px 0;
+}
+
+.btn-reserver:hover {
+    background-color: #218838;
 }
