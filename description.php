@@ -53,9 +53,9 @@ if (isset($_GET['id'])) {
     <main>
         <h1><?php echo $destination['nom']; ?></h1>
         
-        <?php if(isset($_SESSION['user_nom'])): ?>
+        <?php if(isset($_SESSION['user']['nom'])): ?>
             <div class="user-welcome">
-                <p>Connecté en tant que : <?= htmlspecialchars($_SESSION['user_nom']) ?></p>
+                <p>Connecté en tant que : <?= htmlspecialchars($_SESSION['user']['nom']) ?></p>
             </div>
         <?php endif; ?>
 
@@ -69,7 +69,7 @@ if (isset($_GET['id'])) {
             <p><strong>Description :</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         </div>
         <div class="bouton-reserver">
-            <?php if(isset($_SESSION['user_id'])): ?>
+            <?php if(isset($_SESSION['user']['id'])): ?>
                 <a href="reservation.php?lieu_id=<?= $destination['id'] ?>" class="btn-reserver">Réserver</a>
             <?php else: ?>
                 <div class="auth-required">

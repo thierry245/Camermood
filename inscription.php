@@ -35,10 +35,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             if ($stmt->execute([$nom, $email, $hash])) {
                 // Connexion automatique
-                $_SESSION['user_id'] = $pdo->lastInsertId();
-                $_SESSION['user_email'] = $email;
-                $_SESSION['user_nom'] = $nom;
-                $_SESSION['is_admin'] = 0;
+                $_SESSION['user'] = [
+                    'id' => $pdo->lastInsertId(),
+                    'email' => $email,
+                    'nom' => $nom,
+                    'is_admin' => 0
+                ];
                 
                 // Redirection
                 header('Location: index.php');

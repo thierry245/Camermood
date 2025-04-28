@@ -31,7 +31,7 @@ if (!$lieu) {
     die("Lieu non trouvé");
 }
 
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user']['id'])) {
     header('Location: connexion.php?redirect=' . urlencode($_SERVER['REQUEST_URI']));
     exit;
 }
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($erreurs)) {
         if (createReservation(
-            $_SESSION['user_id'],
+            $_SESSION['user']['id'],
             $lieu_id,
             $date_arrivee,
             $date_depart,

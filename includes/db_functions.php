@@ -78,11 +78,12 @@ function checkAdminAccess() {
     }
 }
 function getUserById($id) {
-    $pdo = getDbRead(); //  Utilisez getDbRead() ou getDbWrite()
-    $stmt = $pdo->prepare('SELECT * FROM utilisateurs WHERE id = ?');
+    $pdo = getDbRead(); // ou getDbWrite() si c'est la même connexion
+    $stmt = $pdo->prepare("SELECT id, nom, email, is_admin FROM utilisateurs WHERE id = ?");
     $stmt->execute([$id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
 
 function isAdmin($userId) {
     $user = getUserById($userId);

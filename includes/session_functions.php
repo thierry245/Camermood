@@ -5,7 +5,7 @@ function verifierSession() {
     session_start();
     
     // Vérifie si l'utilisateur est connecté
-    if (!isset($_SESSION['user_id'])) {
+    if (!isset($_SESSION['user']['id'])) {
         header('Location: connexion.php?session=expired');
         exit;
     }

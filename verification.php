@@ -5,13 +5,13 @@ require_once __DIR__.'/controllers/DoubleAuth.controller.php';
 
 session_start();
 
-// Redirection si pas de processus d'auth en cours
+// Vérifie si un processus d'authentification est en cours
 if (!isset($_SESSION['temp_auth'])) {
     header('Location: connexion.php');
     exit;
 }
 
-// Vérification de sécurité (IP)
+// Vérifie si l'IP actuelle correspond à celle stockée dans la session temporaire
 if ($_SESSION['temp_auth']['ip'] !== $_SERVER['REMOTE_ADDR']) {
     session_destroy();
     header('Location: connexion.php?error=hijack');
@@ -23,26 +23,33 @@ $erreur = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $doubleAuth = new DoubleAuth();
     $code = $_POST['code'] ?? '';
-    
+
     if ($doubleAuth->verifierCode($_SESSION['temp_auth']['user_id'], $code)) {
-        // Connexion réussie : récupère toutes les infos de l'utilisateur
-        $user = getUserById($_SESSION['temp_auth']['user_id']); // Doit exister dans db_functions.php
+        // Récupère les infos complètes de l'utilisateur depuis la base
+        $user = getUserById($_SESSION['temp_auth']['user_id']);
 
         if ($user) {
+            // Stocke les infos complètes dans une seule variable de session
             $_SESSION['user'] = [
-                'id' => $user['id'],
-                'nom' => $user['nom'],
-                'is_admin' => $user['is_admin'],
+                'id' => $_SESSION['temp_auth']['user_id'],
+                'nom' => $_SESSION['temp_auth']['user_nom'],
+                'email' => $_SESSION['temp_auth']['email'],
+                'is_admin' => $user['is_admin'] ?? 0,
                 'ip' => $_SERVER['REMOTE_ADDR'],
                 'last_activity' => time()
             ];
+            error_log("Session user créée : " . print_r($_SESSION['user'], true));
 
-            // Nettoyage
+            // Nettoie la session temporaire
             unset($_SESSION['temp_auth']);
+           
+            // Supprime le code de vérification dans la base
             $pdo = getDbWrite();
-            $pdo->prepare("UPDATE utilisateurs SET code_verification = NULL WHERE id = ?")
-                ->execute([$user['id']]);
-
+            $stmt = $pdo->prepare("UPDATE utilisateurs SET code_verification = NULL WHERE id = ?");
+            $stmt->execute([$user['id']]);
+            
+            session_write_close();
+            // Redirige vers l'accueil
             header('Location: index.php');
             exit;
         } else {
@@ -60,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 
 
 <!DOCTYPE html>

@@ -1,9 +1,12 @@
 <?php
-session_start();
+
 require_once __DIR__.'/includes/db_functions.php';
 
-$isLoggedIn = isset($_SESSION['user']['id']);
-$userNom = $isLoggedIn ? $_SESSION['user']['nom'] : '';
+session_start();
+
+
+$isLoggedIn = isset($_SESSION['user']);
+$userNom = $isLoggedIn && !empty($_SESSION['user']['nom']) ? $_SESSION['user']['nom'] : 'Utilisateur';
 $isAdmin = $isLoggedIn && $_SESSION['user']['is_admin'];
 $showAddButton = $isAdmin;
 ?>
