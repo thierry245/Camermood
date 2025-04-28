@@ -11,10 +11,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
-    // Validation simple
+    // Validation 
     if (empty($nom)) $erreurs['nom'] = "Nom requis";
     if (!$email) $erreurs['email'] = "Email invalide";
-    if (strlen($password) < 8) $erreurs['password'] = "8 caractères minimum";
+
+    // Validation du mot de passe 
+    if (strlen($password) < 8) {
+        $erreurs['password'] = "Le mot de passe doit contenir au moins 8 caractères";
+    } elseif (!preg_match('/[A-Z]/', $password)) {
+        $erreurs['password'] = "Le mot de passe doit contenir au moins une majuscule";
+    } elseif (!preg_match('/[0-9]/', $password)) {
+        $erreurs['password'] = "Le mot de passe doit contenir au moins un chiffre";
+    } elseif (!preg_match('/[\W_]/', $password)) { // \W correspond aux caractères non alphanumériques
+        $erreurs['password'] = "Le mot de passe doit contenir au moins un caractère spécial";
+    }
+
     if ($password !== $confirm_password) $erreurs['confirm_password'] = "Mots de passe différents";
 
     if (empty($erreurs)) {

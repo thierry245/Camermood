@@ -72,7 +72,7 @@ function createReservation($userId, $lieuId, $dateArrivee, $dateDepart, $nbPerso
 
 function checkAdminAccess() {
     session_start();
-    if (!isset($_SESSION['user_id']) || !isAdmin($_SESSION['user_id'])) {
+    if (!isset($_SESSION['user']['id']) || !isAdmin($_SESSION['user']['id'])) {
         header('HTTP/1.0 403 Forbidden');
         die('Accès interdit');
     }

@@ -576,3 +576,54 @@ h1 {
 .btn-reserver:hover {
     background-color: #218838;
 }
+
+/* pour les champs dynamiques */
+#dynamic-fields-container {
+    margin: 20px 0;
+}
+
+.dynamic-field {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+}
+
+/* Cases à cocher */
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.checkbox-option input {
+    margin-right: 8px;
+}
+
+/* Groupes de champs (horaires, tarifs) */
+.input-group {
+    margin: 10px 0;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Plage de dates */
+.date-range {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+/* Animation minimale */
+@keyframes appear {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.dynamic-field {
+    animation: appear 0.3s ease-out;
+}

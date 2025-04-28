@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__.'/includes/db_functions.php';
-require_once __DIR__.'/includes/db_functions.php';
+require_once __DIR__.'/includes/session_functions.php';
 // Vérification de session ET des droits admin
 verifierSession();
 checkAdminAccess(); // Bloque l'accès si non-admin
@@ -128,18 +128,27 @@ checkAdminAccess(); // Bloque l'accès si non-admin
             
             
             <!-- Image -->
-             <div class="form-group">
+            <div class="form-group">
 
                 <label for="image-lieu">Image :</label>
                 <input type="file" id="image-lieu" name="image-lieu" accept="image/*">
 
-             </div>
-            
+            </div>
+
+            <!-- Champ dynamique  --> 
+            <div id="dynamic-fields-container">
+                <!-- Les champs spécifiques apparaîtront ici automatiquement -->
+            </div>
 
             <!-- Bouton de soumission -->
-             <div class="form-group">
+            <div class="form-group">
                 <button type="submit" class="btn-primary">Ajouter le lieu</button>
-             </div>
+            </div>
+
+            <!-- Bouton Annuler -->
+            <div class="form-group" >
+                <a href="index.php" class="btn-secondary">Annuler</a>
+            </div>
             
         </form>
         <script src="JS/script.js"></script>
