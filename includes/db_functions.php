@@ -89,4 +89,34 @@ function isAdmin($userId) {
     $user = getUserById($userId);
     return $user && $user['is_admin'] == 1;
 }
+
+/**
+ * Récupère toutes les destinations d'un type spécifique
+ */
+function getDestinationsByType($type) {
+    try {
+        $pdo = getDbRead();
+        $stmt = $pdo->prepare("SELECT * FROM destinations WHERE type = ? ORDER BY nom");
+        $stmt->execute([$type]);
+        return $stmt->fetchAll();
+    } catch (PDOException $e) {
+        error_log("Erreur getDestinationsByType: " . $e->getMessage());
+        return [];
+    }
+}
+
+/**
+ * Récupère une destination par son ID
+ */
+function getDestinationById($id) {
+    try {
+        $pdo = getDbRead();
+        $stmt = $pdo->prepare("SELECT * FROM destinations WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch();
+    } catch (PDOException $e) {
+        error_log("Erreur getDestinationById: " . $e->getMessage());
+        return null;
+    }
+}
 ?>

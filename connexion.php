@@ -1,16 +1,3 @@
-<?php 
-
-if (isset($_COOKIE['PHPSESSID'])) {
-    echo "Session ID : " . $_COOKIE['PHPSESSID'] . "<br>";
-} else {
-    echo "Aucune session ID détectée.<br>";
-}
-
-echo '<pre>';
-print_r($_SESSION ?? 'Pas de session active');
-echo '</pre>';
-
-?>
 
 
 <!DOCTYPE html>

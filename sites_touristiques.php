@@ -1,9 +1,9 @@
 <?php
-include 'donnees_destinations.php'; // Inclure les données
-$type = 'site-touristique'; // Filtrer par type "festival"
-$destinationsFiltrees = array_filter($destinations, function ($destination) use ($type) {
-    return $destination['type'] === $type;
-});
+require_once __DIR__.'/includes/db_functions.php';
+
+// Récupérer les sites touristiques  depuis la base de données
+$type = 'site-touristique';
+$destinationsFiltrees = getDestinationsByType($type);
 ?>
 
 <!DOCTYPE html>
@@ -52,12 +52,12 @@ $destinationsFiltrees = array_filter($destinations, function ($destination) use 
         <div class="grille-destinations">
             <?php foreach ($destinationsFiltrees as $destination) : ?>
                 <div class="carte-destination">
-                    <img src="<?php echo $destination['image']; ?>" alt="<?php echo $destination['nom']; ?>">
-                    <h3><?php echo $destination['nom']; ?></h3>
-                    <p><?php echo $destination['ville']; ?>, <?php echo $destination['pays']; ?></p>
-                    <p><?php echo $destination['note']; ?> - <?php echo $destination['experiences']; ?></p>
-                    <p>À partir de : <?php echo $destination['prix']; ?></p>
-                    <a href="<?php echo $destination['lien']; ?>" class="bouton-voyager">Voyager</a>
+                    <img src="<?= htmlspecialchars($destination['image']) ?>" alt="<?= htmlspecialchars($destination['nom']) ?>">
+                    <h3><?= htmlspecialchars($destination['nom']) ?></h3>
+                    <p><?= htmlspecialchars($destination['ville']) ?>, <?= htmlspecialchars($destination['pays']) ?></p>
+                    <p><?= htmlspecialchars($destination['note']) ?> - <?= htmlspecialchars($destination['experiences']) ?></p>
+                    <p>À partir de : <?= htmlspecialchars($destination['prix']) ?></p>
+                    <a href="description.php?id=<?= $destination['id'] ?>" class="bouton-voyager">Voyager</a>
                 </div>
             <?php endforeach; ?>
         </div>
