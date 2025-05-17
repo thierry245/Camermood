@@ -119,4 +119,51 @@ function getDestinationById($id) {
         return null;
     }
 }
+
+/**
+ * Récupère les réservations d'un utilisateur
+ */
+function getUserReservations($userId) {
+    try {
+        $pdo = getDbRead();
+        $stmt = $pdo->prepare("
+            SELECT r.*, d.nom as lieu_nom, d.type as lieu_type, d.image as lieu_image
+            FROM reservations r
+            JOIN destinations d ON r.lieu_id = d.id
+            WHERE r.utilisateur_id = :userId
+            ORDER BY r.date_creation DESC
+        ");
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    } catch (PDOException $e) {
+        error_log("Erreur getUserReservations: " . $e->getMessage());
+        return [];
+    }
+}
+
+/**
+ * Récupère toutes les réservations (pour admin)
+ */
+function getAllReservationsWithUsers() {
+    try {
+        $pdo = getDbRead();
+        $stmt = $pdo->prepare("
+            SELECT r.*, d.nom as lieu_nom, d.type as lieu_type, 
+                   u.nom as user_nom, u.email as user_email
+            FROM reservations r
+            JOIN destinations d ON r.lieu_id = d.id
+            JOIN utilisateurs u ON r.utilisateur_id = u.id
+            ORDER BY r.date_creation DESC
+        ");
+        $stmt->execute();
+        return $stmt->fetchAll();
+    } catch (PDOException $e) {
+        error_log("Erreur getAllReservationsWithUsers: " . $e->getMessage());
+        return [];
+    }
+}
+function fixEncoding($str) {
+    return mb_convert_encoding($str, 'UTF-8', 'Windows-1252');
+}
 ?>

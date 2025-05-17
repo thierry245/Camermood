@@ -1,30 +1,44 @@
 <?php
-
+header('Content-Type: text/html; charset=utf-8');
 require_once __DIR__.'/includes/db_functions.php';
+require_once __DIR__.'/includes/session_functions.php';
 
+// Ne pas rediriger si non connecté pour la page d'accueil
 session_start();
+$isLoggedIn = verifierSession(false); // false empêche la redirection
 
-
-$isLoggedIn = isset($_SESSION['user']);
 $userNom = $isLoggedIn && !empty($_SESSION['user']['nom']) ? $_SESSION['user']['nom'] : 'Utilisateur';
 $isAdmin = $isLoggedIn && $_SESSION['user']['is_admin'];
 $showAddButton = $isAdmin;
+
+// Récupérer les réservations si demandé
+$showReservations = false;
+$reservations = [];
+
+if ($isLoggedIn && isset($_GET['show_reservations'])) {
+    $showReservations = true;
+    
+    if ($isAdmin) {
+        $reservations = getAllReservationsWithUsers();
+    } else {
+        $reservations = getUserReservations($_SESSION['user']['id']);
+    }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <link rel="stylesheet" href="CSS\style.css">
+    <link rel="stylesheet" href="CSS/style.css">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
     <title>Camermood</title>
 </head>
 
 <body>
-
     <header>
         <video autoplay muted loop class="background-video">
-            <source src="video\pond_wouri.mp4" type="video/mp4">
+            <source src="video\video_festivals.mp4" type="video/mp4">
             
         </video>
     
@@ -55,25 +69,90 @@ $showAddButton = $isAdmin;
     <main> 
         <h1>Bienvenue sur CamerMood <?= $isLoggedIn ? htmlspecialchars($userNom) : '' ?></h1>
             
-            <?php if($isLoggedIn): ?>
-                <div class="user-welcome">
-                    <p>Content de vous revoir, <?= htmlspecialchars($userNom) ?> !</p>
+        <?php if($isLoggedIn): ?>
+            <div class="user-welcome">
+                <p>Content de vous revoir, <?= htmlspecialchars($userNom) ?> !</p>
+                <div class="user-actions">
+                    <a href="?show_reservations=1" class="btn-primary">Mes réservations</a>
+                    <?php if($showReservations): ?>
+                        <a href="index.php" class="btn-secondary">Masquer les réservations</a>
+                    <?php endif; ?>
                     <a href="deconnexion.php" class="btn-logout">Déconnexion</a>
                 </div>
-            <?php else: ?>
-                <div class="auth-options">
-                    <a href="connexion.php" class="btn-primary">Se connecter</a>
-                    <a href="inscription.php" class="btn-secondary">S'inscrire</a>
-                </div>
-            <?php endif; ?>
+            </div>
+        <?php else: ?>
+            <div class="auth-options">
+                <a href="connexion.php" class="btn-primary">Se connecter</a>
+                <a href="inscription.php" class="btn-secondary">S'inscrire</a>
+            </div>
+        <?php endif; ?>
 
-            <?php if ($showAddButton): ?>
-                <a href="ajouter_lieu.php" class="bouton-ajouter-lieu">Ajouter un lieu</a>
-            <?php endif; ?>
+        <?php if ($showAddButton): ?>
+            <a href="ajouter_lieu.php" class="bouton-ajouter-lieu">Ajouter un lieu</a>
+        <?php endif; ?>
+
+        <?php if ($showReservations): ?>
+            <div class="reservations-container">
+                <h2><?= $isAdmin ? 'Toutes les réservations' : 'Mes réservations' ?></h2>
+                
+                <?php if (empty($reservations)): ?>
+                    <p class="no-reservations">Aucune réservation trouvée.</p>
+                <?php else: ?>
+                    <?php foreach ($reservations as $reservation): ?>
+                        <div class="reservation-card">
+                            <?php if (!$isAdmin && isset($reservation['lieu_image'])): ?>
+                                <img src="<?= htmlspecialchars($reservation['lieu_image']) ?>" 
+                                     alt="<?= htmlspecialchars($reservation['lieu_nom']) ?>" 
+                                     class="reservation-image">
+                            <?php endif; ?>
+                            
+                            <div class="reservation-details">
+                                <?php if ($isAdmin): ?>
+                                    <div class="admin-user-info">
+                                        <strong>Client:</strong> 
+                                        <?= htmlspecialchars($reservation['user_nom']) ?> 
+                                        (<?= htmlspecialchars($reservation['user_email']) ?>)
+                                    </div>
+                                <?php endif; ?>
+                                
+                                <h3><?= htmlspecialchars($reservation['lieu_nom']) ?></h3>
+                                <p><strong>Type:</strong> <?= htmlspecialchars($reservation['lieu_type']) ?></p>
+                                <p><strong>Dates:</strong> 
+                                    Du <?= date('d/m/Y', strtotime($reservation['date_arrivee'])) ?> 
+                                    au <?= date('d/m/Y', strtotime($reservation['date_depart'])) ?>
+                                </p>
+                                <p><strong>Personnes:</strong> <?= $reservation['nb_personnes'] ?></p>
+                                <p><strong>Statut:</strong> 
+                                    <span class="reservation-status status-<?= htmlspecialchars(strtolower($reservation['statut'])) ?>">
+                                        <?=
+                                        // Normalisation des statuts
+                                        match (true) {
+                                            (stripos($reservation['statut'], 'confirm')) !== false => 'Confirmée',
+                                            (stripos($reservation['statut'], 'annul')) !== false   => 'Annulée',
+                                            default => htmlspecialchars($reservation['statut'])
+                                        }
+                                        ?>
+                                    </span>
+                                </p>
+                                
+                                <div class="reservation-actions">
+                                    <?php 
+                                    $statut = $reservation['statut'];
+                                    $isConfirmed = ($statut == 'confirmée' || $statut == 'confirmÃ©e' || stripos($statut, 'confirm') !== false);
+                                    
+                                    if ($isConfirmed): ?>
+                                        <a href="annuler_reservation.php?id=<?= $reservation['id'] ?>" 
+                                        class="btn-small btn-danger">Annuler</a>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     </main>
     
-    
-
     <footer class="booking-footer">
     <div class="footer-container">
         <div class="footer-section">
@@ -128,7 +207,5 @@ $showAddButton = $isAdmin;
         </div>
     </div>
 </footer>
-    
-
 </body>
 </html>

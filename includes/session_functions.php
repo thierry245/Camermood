@@ -1,13 +1,15 @@
 <?php
 require_once __DIR__.'/../config/session_config.php';
 
-function verifierSession() {
+function verifierSession($redirigerSiNonConnecte = true) {
     session_start();
     
-    // Vérifie si l'utilisateur est connecté
     if (!isset($_SESSION['user']['id'])) {
-        header('Location: connexion.php?session=expired');
-        exit;
+        if ($rediriger) {
+            header('Location: connexion.php?session=expired');
+            exit;
+        }
+        return false;
     }
     
     // Vérifie l'expiration de la session
@@ -15,12 +17,16 @@ function verifierSession() {
         // Session expirée
         session_unset();
         session_destroy();
-        header('Location: connexion.php?session=expired');
-        exit;
+        if ($redirigerSiNonConnecte) {
+            header('Location: connexion.php?session=expired');
+            exit;
+        }
+        return false;
     }
     
     // Met à jour le timestamp de dernière activité
     $_SESSION['last_activity'] = time();
+    return true;
 }
 
 function deconnecterUtilisateur() {
