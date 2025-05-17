@@ -37,43 +37,54 @@ if (!isset($_SESSION['user']['id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupération et validation des données
-    $lieu_id = $_POST['lieu_id'] ?? $lieu_id;
-    $date_arrivee = $_POST['date_arrivee'] ?? '';
-    $date_depart = $_POST['date_depart'] ?? '';
-    $nb_personnes = $_POST['nb_personnes'] ?? 1;
-    $commentaires = $_POST['commentaires'] ?? '';
+    try {
+        // Récupération et validation des données avec filter_input
+        $lieu_id = filter_input(INPUT_POST, 'lieu_id', FILTER_VALIDATE_INT);
+        $date_arrivee = filter_input(INPUT_POST, 'date_arrivee', FILTER_SANITIZE_STRING);
+        $date_depart = filter_input(INPUT_POST, 'date_depart', FILTER_SANITIZE_STRING);
+        $nb_personnes = filter_input(INPUT_POST, 'nb_personnes', FILTER_VALIDATE_INT);
+        $commentaires = filter_input(INPUT_POST, 'commentaires', FILTER_SANITIZE_STRING);
 
-    // Validation
-    if (empty($date_arrivee)) {
-        $erreurs['date_arrivee'] = "La date d'arrivée est obligatoire";
-    } elseif (strtotime($date_arrivee) < strtotime('today')) {
-        $erreurs['date_arrivee'] = "La date d'arrivée ne peut pas être dans le passé";
-    }
-
-    if (empty($date_depart)) {
-        $erreurs['date_depart'] = "La date de départ est obligatoire";
-    } elseif (strtotime($date_depart) <= strtotime($date_arrivee)) {
-        $erreurs['date_depart'] = "La date de départ doit être après la date d'arrivée";
-    }
-
-    if ($nb_personnes < 1 || $nb_personnes > 10) {
-        $erreurs['nb_personnes'] = "Nombre de personnes invalide";
-    }
-
-    if (empty($erreurs)) {
-        if (createReservation(
-            $_SESSION['user']['id'],
-            $lieu_id,
-            $date_arrivee,
-            $date_depart,
-            $nb_personnes,
-            $commentaires
-        )) {
-            $succes = true;
-        } else {
-            $erreur = "Erreur lors de la création de la réservation";
+        // Validation
+        if (empty($date_arrivee)) {
+            $erreurs['date_arrivee'] = "La date d'arrivée est obligatoire";
+        } elseif (strtotime($date_arrivee) < strtotime('today')) {
+            $erreurs['date_arrivee'] = "La date d'arrivée ne peut pas être dans le passé";
         }
+
+        if (empty($date_depart)) {
+            $erreurs['date_depart'] = "La date de départ est obligatoire";
+        } elseif (strtotime($date_depart) <= strtotime($date_arrivee)) {
+            $erreurs['date_depart'] = "La date de départ doit être après la date d'arrivée";
+        }
+
+        if ($nb_personnes < 1 || $nb_personnes > 10) {
+            $erreurs['nb_personnes'] = "Nombre de personnes invalide";
+        }
+
+        if (empty($erreurs)) {
+            $pdo = getDbWrite();
+            $stmt = $pdo->prepare("
+                INSERT INTO reservations 
+                (utilisateur_id, lieu_id, date_arrivee, date_depart, nb_personnes, commentaires) 
+                VALUES (:userId, :lieuId, :dateArrivee, :dateDepart, :nbPersonnes, :commentaires)
+            ");
+            
+            $stmt->bindValue(':userId', $_SESSION['user']['id'], PDO::PARAM_INT);
+            $stmt->bindValue(':lieuId', $lieu_id, PDO::PARAM_INT);
+            $stmt->bindValue(':dateArrivee', $date_arrivee, PDO::PARAM_STR);
+            $stmt->bindValue(':dateDepart', $date_depart, PDO::PARAM_STR);
+            $stmt->bindValue(':nbPersonnes', $nb_personnes, PDO::PARAM_INT);
+            $stmt->bindValue(':commentaires', $commentaires, PDO::PARAM_STR);
+            
+            if ($stmt->execute()) {
+                $succes = true;
+            } else {
+                $erreur = "Erreur lors de la création de la réservation";
+            }
+        }
+    } catch (Exception $e) {
+        $erreur = "Erreur lors du traitement: " . $e->getMessage();
     }
 }
 ?>

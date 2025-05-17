@@ -21,49 +21,57 @@ if ($_SESSION['temp_auth']['ip'] !== $_SERVER['REMOTE_ADDR']) {
 $erreur = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $doubleAuth = new DoubleAuth();
-    $code = $_POST['code'] ?? '';
+    try {
+        $code = filter_input(INPUT_POST, 'code', FILTER_SANITIZE_STRING);
+        
+        if (empty($code)) {
+            throw new Exception("Code vide");
+        }
 
-    if ($doubleAuth->verifierCode($_SESSION['temp_auth']['user_id'], $code)) {
-        // Récupère les infos complètes de l'utilisateur depuis la base
-        $user = getUserById($_SESSION['temp_auth']['user_id']);
+        $doubleAuth = new DoubleAuth();
+        
+        if ($doubleAuth->verifierCode($_SESSION['temp_auth']['user_id'], $code)) {
+            // Récupère les infos complètes de l'utilisateur depuis la base
+            $user = getUserById($_SESSION['temp_auth']['user_id']);
 
-        if ($user) {
-            // Stocke les infos complètes dans une seule variable de session
-            $_SESSION['user'] = [
-                'id' => $_SESSION['temp_auth']['user_id'],
-                'nom' => $_SESSION['temp_auth']['user_nom'],
-                'email' => $_SESSION['temp_auth']['email'],
-                'is_admin' => $user['is_admin'] ?? 0,
-                'ip' => $_SERVER['REMOTE_ADDR'],
-                'last_activity' => time()
-            ];
-            error_log("Session user créée : " . print_r($_SESSION['user'], true));
+            if ($user) {
+                $_SESSION['user'] = [
+                    'id' => $_SESSION['temp_auth']['user_id'],
+                    'nom' => $_SESSION['temp_auth']['user_nom'],
+                    'email' => $_SESSION['temp_auth']['email'],
+                    'is_admin' => $user['is_admin'] ?? 0,
+                    'ip' => $_SERVER['REMOTE_ADDR'],
+                    'last_activity' => time()
+                ];
+                error_log("Session user créée : " . print_r($_SESSION['user'], true));
 
-            // Nettoie la session temporaire
-            unset($_SESSION['temp_auth']);
-           
-            // Supprime le code de vérification dans la base
-            $pdo = getDbWrite();
-            $stmt = $pdo->prepare("UPDATE utilisateurs SET code_verification = NULL WHERE id = ?");
-            $stmt->execute([$user['id']]);
-            
-            session_write_close();
-            // Redirige vers l'accueil
-            header('Location: index.php');
-            exit;
+                // Nettoie la session temporaire
+                unset($_SESSION['temp_auth']);
+               
+                // Supprime le code de vérification dans la base
+                $pdo = getDbWrite();
+                $stmt = $pdo->prepare("UPDATE utilisateurs SET code_verification = NULL WHERE id = :userId");
+                $stmt->bindValue(':userId', $user['id'], PDO::PARAM_INT);
+                $stmt->execute();
+                
+                session_write_close();
+                header('Location: index.php');
+                exit;
+            } else {
+                $erreur = "Erreur lors de la récupération des données utilisateur.";
+            }
         } else {
-            $erreur = "Erreur lors de la récupération des données utilisateur.";
-        }
-    } else {
-        $erreur = "Code invalide";
-        $_SESSION['temp_auth']['attempts']++;
+            $erreur = "Code invalide";
+            $_SESSION['temp_auth']['attempts']++;
 
-        if ($_SESSION['temp_auth']['attempts'] >= 3) {
-            session_destroy();
-            header('Location: connexion.php?error=blocked');
-            exit;
+            if ($_SESSION['temp_auth']['attempts'] >= 3) {
+                session_destroy();
+                header('Location: connexion.php?error=blocked');
+                exit;
+            }
         }
+    } catch (Exception $e) {
+        $erreur = "Erreur de traitement: " . $e->getMessage();
     }
 }
 ?>

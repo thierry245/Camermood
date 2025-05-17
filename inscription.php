@@ -5,61 +5,69 @@ session_start();
 $erreurs = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupération des données
-    $nom = htmlspecialchars(trim($_POST['nom']));
-    $email = filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL);
-    $password = $_POST['password'];
-    $confirm_password = $_POST['confirm_password'];
+    try {
+        // Récupération des données avec filter_input
+        $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
+        $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+        $confirm_password = filter_input(INPUT_POST, 'confirm_password', FILTER_SANITIZE_STRING);
 
-    // Validation 
-    if (empty($nom)) $erreurs['nom'] = "Nom requis";
-    if (!$email) $erreurs['email'] = "Email invalide";
+        // Validation 
+        if (empty($nom)) $erreurs['nom'] = "Nom requis";
+        if (!$email) $erreurs['email'] = "Email invalide";
 
-    // Validation du mot de passe 
-    if (strlen($password) < 8) {
-        $erreurs['password'] = "Le mot de passe doit contenir au moins 8 caractères";
-    } elseif (!preg_match('/[A-Z]/', $password)) {
-        $erreurs['password'] = "Le mot de passe doit contenir au moins une majuscule";
-    } elseif (!preg_match('/[0-9]/', $password)) {
-        $erreurs['password'] = "Le mot de passe doit contenir au moins un chiffre";
-    } elseif (!preg_match('/[\W_]/', $password)) { // \W correspond aux caractères non alphanumériques
-        $erreurs['password'] = "Le mot de passe doit contenir au moins un caractère spécial";
-    }
+        // Validation du mot de passe 
+        if (strlen($password) < 8) {
+            $erreurs['password'] = "Le mot de passe doit contenir au moins 8 caractères";
+        } elseif (!preg_match('/[A-Z]/', $password)) {
+            $erreurs['password'] = "Le mot de passe doit contenir au moins une majuscule";
+        } elseif (!preg_match('/[0-9]/', $password)) {
+            $erreurs['password'] = "Le mot de passe doit contenir au moins un chiffre";
+        } elseif (!preg_match('/[\W_]/', $password)) {
+            $erreurs['password'] = "Le mot de passe doit contenir au moins un caractère spécial";
+        }
 
-    if ($password !== $confirm_password) $erreurs['confirm_password'] = "Mots de passe différents";
+        if ($password !== $confirm_password) $erreurs['confirm_password'] = "Mots de passe différents";
 
-    if (empty($erreurs)) {
-        $pdo = getDbWrite();
-        
-        // Vérification si l'email existe déjà
-        $stmt = $pdo->prepare("SELECT id FROM utilisateurs WHERE email = ?");
-        $stmt->execute([$email]);
-        
-        if ($stmt->rowCount() > 0) {
-            $erreurs['email'] = "Email déjà utilisé";
-        } else {
-            // Hachage du mot de passe
-            $hash = password_hash($password, PASSWORD_DEFAULT);
+        if (empty($erreurs)) {
+            $pdo = getDbWrite();
             
-            // Insertion dans la base
-            $stmt = $pdo->prepare("INSERT INTO utilisateurs (nom, email, password_hash) VALUES (?, ?, ?)");
+            // Vérification si l'email existe déjà
+            $stmt = $pdo->prepare("SELECT id FROM utilisateurs WHERE email = :email");
+            $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+            $stmt->execute();
             
-            if ($stmt->execute([$nom, $email, $hash])) {
-                // Connexion automatique
-                $_SESSION['user'] = [
-                    'id' => $pdo->lastInsertId(),
-                    'email' => $email,
-                    'nom' => $nom,
-                    'is_admin' => 0
-                ];
-                
-                // Redirection
-                header('Location: index.php');
-                exit;
+            if ($stmt->rowCount() > 0) {
+                $erreurs['email'] = "Email déjà utilisé";
             } else {
-                $erreurs['general'] = "Erreur lors de l'inscription";
+                // Hachage du mot de passe
+                $hash = password_hash($password, PASSWORD_DEFAULT);
+                
+                // Insertion dans la base
+                $stmt = $pdo->prepare("INSERT INTO utilisateurs (nom, email, password_hash) VALUES (:nom, :email, :hash)");
+                $stmt->bindValue(':nom', $nom, PDO::PARAM_STR);
+                $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+                $stmt->bindValue(':hash', $hash, PDO::PARAM_STR);
+                
+                if ($stmt->execute()) {
+                    // Connexion automatique
+                    $_SESSION['user'] = [
+                        'id' => $pdo->lastInsertId(),
+                        'email' => $email,
+                        'nom' => $nom,
+                        'is_admin' => 0
+                    ];
+                    
+                    // Redirection
+                    header('Location: index.php');
+                    exit;
+                } else {
+                    $erreurs['general'] = "Erreur lors de l'inscription";
+                }
             }
         }
+    } catch (Exception $e) {
+        $erreurs['general'] = "Erreur lors du traitement: " . $e->getMessage();
     }
 }
 ?>

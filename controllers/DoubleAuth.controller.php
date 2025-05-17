@@ -5,22 +5,27 @@ class DoubleAuth {
     private PDO $connexion;
 
     public function __construct() {
-        $this->connexion = getDbWrite(); // Connexion en écriture
+        $this->connexion = getDbWrite();
     }
 
     public function genererCode(int $userId, string $email): string {
         try {
             $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-            $expiration = date('Y-m-d H:i:s', time() + 300); // 5 minutes
+            $expiration = date('Y-m-d H:i:s', time() + 300);
 
             error_log("Tentative d'UPDATE pour user $userId avec code $code");
 
             $stmt = $this->connexion->prepare("
                 UPDATE utilisateurs 
-                SET code_verification = ?, code_expiration = ? 
-                WHERE id = ?
+                SET code_verification = :code, code_expiration = :expiration 
+                WHERE id = :userId
             ");
-            $success = $stmt->execute([$code, $expiration, $userId]);
+            
+            $stmt->bindValue(':code', $code, PDO::PARAM_STR);
+            $stmt->bindValue(':expiration', $expiration, PDO::PARAM_STR);
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+            
+            $success = $stmt->execute();
 
             if (!$success) {
                 error_log("Échec d'exécution de la requête pour user $userId");
@@ -52,9 +57,10 @@ class DoubleAuth {
         $stmt = $this->connexion->prepare("
             SELECT code_verification, code_expiration 
             FROM utilisateurs 
-            WHERE id = ?
+            WHERE id = :userId
         ");
-        $stmt->execute([$userId]);
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $stmt->execute();
         $row = $stmt->fetch();
 
         if (!$row) return false;
