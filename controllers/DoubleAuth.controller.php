@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__.'/../includes/db_functions.php';
+require_once __DIR__.'/../includes/logging_functions.php';
 
 class DoubleAuth {
     private PDO $connexion;
@@ -33,6 +34,8 @@ class DoubleAuth {
             }
 
             error_log("Requête UPDATE réussie pour user $userId");
+            
+            logToFile('insertion-bd.log', "Code de vérification généré pour user $userId: $code");
 
             // Envoi du courriel
             $subject = "Votre code de vérification - CamerMood";

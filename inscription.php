@@ -14,7 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Validation 
         if (empty($nom)) $erreurs['nom'] = "Nom requis";
-        if (!$email) $erreurs['email'] = "Email invalide";
+        
+        if (!$email) {
+            $erreurs['email'] = "Format d'email invalide";
+        } elseif (!isEmailDeliverable($email)) {
+            $erreurs['email'] = "Cette adresse e-mail n'est pas livrable (domaine inexistant ou boîte invalide)";
+        }
 
         // Validation du mot de passe 
         if (strlen($password) < 8) {

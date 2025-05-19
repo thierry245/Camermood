@@ -2,6 +2,7 @@
 require_once __DIR__.'/../includes/db_functions.php';
 require_once __DIR__.'/../config/session_config.php';
 require_once __DIR__.'/DoubleAuth.controller.php';
+require_once __DIR__.'/../includes/logging_functions.php';
 
 session_start();
 
@@ -30,10 +31,13 @@ try {
     $user = $stmt->fetch();
 
     if (!$user || !password_verify($password, $user['password_hash'])) {
-        error_log("Tentative de connexion échouée pour: $email");
-        header('Location: ../connexion.php?error=invalid');
-        exit;
+    logToFile('acces-refuses.log', "Tentative de connexion échouée pour l'email: $email");
+    header('Location: ../connexion.php?error=invalid');
+    exit;
     }
+
+    // Après la vérification réussie
+    logToFile('acces-reussis.log', "Connexion réussie pour l'utilisateur ID: {$user['id']} avec l'email: $email");
 
     error_log("Utilisateur valide: ID " . $user['id']);
 

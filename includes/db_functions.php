@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__.'/../config/db_config.php';
+require_once __DIR__.'/../includes/logging_functions.php';
 
 /**
  * Obtient une connexion PDO pour les opérations de lecture
@@ -63,6 +64,11 @@ function createReservation($userId, $lieuId, $dateArrivee, $dateDepart, $nbPerso
             (utilisateur_id, lieu_id, date_arrivee, date_depart, nb_personnes) 
             VALUES (?, ?, ?, ?, ?)
         ");
+
+        if ($stmt->execute()) {
+            logToFile('insertion-bd.log', "Nouvelle réservation créée - UserID: $userId, LieuID: $lieuId");
+            return true;
+        }
         return $stmt->execute([$userId, $lieuId, $dateArrivee, $dateDepart, $nbPersonnes]);
     } catch (PDOException $e) {
         error_log("Erreur createReservation: " . $e->getMessage());
@@ -165,5 +171,21 @@ function getAllReservationsWithUsers() {
 }
 function fixEncoding($str) {
     return mb_convert_encoding($str, 'UTF-8', 'Windows-1252');
+}
+
+function isEmailDeliverable(string $email): bool {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return false;
+    }
+
+    // Extraction du domaine
+    $domain = explode('@', $email)[1];
+
+    // 1. Vérification DNS MX (le domaine accepte-t-il les emails ?)
+    if (!checkdnsrr($domain, 'MX')) {
+        return false;
+    }
+
+    return true; // Si toutes les vérifications passent
 }
 ?>
